@@ -3,13 +3,13 @@ import useSWR from 'swr'
 import { TodoWithUser } from '@/types'
 import { fetcher } from './fetcher'
 
-export const useBooks = () => {
+export const useTodos = () => {
   const { data, error, mutate } = useSWR<TodoWithUser[]>('/api/todos', fetcher)
 
   const refetch = useCallback(() => mutate(), [mutate])
 
   return {
-    books: data,
+    todos: data,
     isLoading: !error && !data,
     error,
     refetch,

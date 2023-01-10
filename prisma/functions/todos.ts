@@ -2,7 +2,7 @@ import { prisma } from '@/libs/prisma'
 
 import { TodoWithUser, Todo } from '@/types'
 
-export const getBooksWithUser = async (): Promise<TodoWithUser[]> => {
+export const getTodosWithUser = async (): Promise<TodoWithUser[]> => {
   const todos = await prisma.todo.findMany({
     include: {
       user: true,

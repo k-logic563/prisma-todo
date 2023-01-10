@@ -1,4 +1,4 @@
-import { Todo } from '@prisma/client'
+import { Todo } from '@/types'
 
 export const createTodo = async (param: Omit<Todo, 'id'>): Promise<Todo> => {
   const response = await fetch('/api/todos', {
