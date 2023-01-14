@@ -41,7 +41,7 @@ export const createTodo = async (param: Omit<Todo, 'id'>): Promise<Todo> => {
   return todos
 }
 
-export const updateTodo = async (param: Todo): Promise<Todo> => {
+export const updateTodo = async (param: Omit<Todo, 'userId'>): Promise<Todo> => {
   const todos = await prisma.todo.update({
     where: {
       id: param.id,

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { TextInput, Group, Button, Container } from '@mantine/core'
+import { TextInput, Group, Button, Container, Switch } from '@mantine/core'
 import { useForm } from '@mantine/form'
 
-import { createTodo } from '@/libs/api/todos'
+import { updateTodo } from '@/libs/api/todos'
 
 import { FormValues, Todo } from '@/types'
 
@@ -20,18 +20,17 @@ export default function Edit() {
     },
   })
 
-  const handleSubmit = async (values: FormValues) => {
-    console.log('🍤', values)
-    // try {
-    //   const payloads = {
-    //     ...values,
-    //     userId: 1,
-    //   }
-    //   await createTodo(payloads)
-    //   await push('/')
-    // } catch (e) {
-    //   alert(e)
-    // }
+  const handleSubmit = async (values: Required<FormValues>) => {
+    try {
+      const payloads = {
+        ...values,
+        id: Number(query.id)
+      }
+      await updateTodo(payloads)
+      await push('/')
+    } catch (e) {
+      alert(e)
+    }
   }
 
   const fetchData = async () => {
@@ -46,6 +45,7 @@ export default function Edit() {
 
       const data = (await response.json()) as Todo
       form.setFieldValue('title', data.title)
+      form.setFieldValue('isCompleted', data.isCompleted)
     } catch (error) {
       throw error
     }
@@ -68,8 +68,16 @@ export default function Edit() {
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
               withAsterisk
-              label="Todo"
+              label="タイトル"
               {...form.getInputProps('title')}
+            />
+            <Switch
+              mt="md"
+              size="lg"
+              offLabel="未完了"
+              onLabel="完了"
+              checked={form.values.isCompleted}
+              {...form.getInputProps('isCompleted')}
             />
             <Group position="right" mt="md">
               <Button type="submit">Submit</Button>

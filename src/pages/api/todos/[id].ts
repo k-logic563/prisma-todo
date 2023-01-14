@@ -23,7 +23,7 @@ export default async function handler(
 
     case 'PATCH':
       if (!body) return res.status(400).end('No body')
-      const params = JSON.parse(body) as Todo
+      const params = JSON.parse(body) as Omit<Todo, 'userId'>
       const updatedBook = await updateTodo(params)
       res.status(200).json(updatedBook)
       break

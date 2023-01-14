@@ -8,7 +8,7 @@ export const createTodo = async (param: Omit<Todo, 'id'>): Promise<Todo> => {
   return (await response.json()) as Todo
 }
 
-export const updateBook = async (param: Todo): Promise<Todo> => {
+export const updateTodo = async (param: Omit<Todo, 'userId'>): Promise<Todo> => {
   try {
     const response = await fetch(`/api/todos/${param.id}`, {
       method: 'PATCH',

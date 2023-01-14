@@ -45,7 +45,7 @@ export default function Register() {
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
               withAsterisk
-              label="TODO Title"
+              label="タイトル"
               {...form.getInputProps('title')}
             />
             <Group position="right" mt="md">
