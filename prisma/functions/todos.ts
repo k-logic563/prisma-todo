@@ -2,15 +2,6 @@ import { prisma } from '@/libs/prisma'
 
 import { TodoWithUser, Todo } from '@/types'
 
-type Props = {
-  include: {
-    user: boolean
-  }
-  where?: {
-    id: number
-  }
-}
-
 export const getTodosWithUser = async (): Promise<TodoWithUser[]> => {
   const todos = await prisma.todo.findMany({
     include: {
@@ -34,19 +25,30 @@ export const getUniqueTodoWithUser = async (
   return todos
 }
 
-export const createTodo = async (param: Omit<Todo, 'id'>): Promise<Todo> => {
+export const createTodos = async (param: Omit<Todo, 'id'>): Promise<Todo> => {
   const todos = await prisma.todo.create({
     data: param,
   })
   return todos
 }
 
-export const updateTodo = async (param: Omit<Todo, 'userId'>): Promise<Todo> => {
+export const updateTodos = async (
+  param: Omit<Todo, 'userId'>
+): Promise<Todo> => {
   const todos = await prisma.todo.update({
     where: {
       id: param.id,
     },
     data: param,
+  })
+  return todos
+}
+
+export const deleteTodos = async (param: Pick<Todo, 'id'>): Promise<Todo> => {
+  const todos = await prisma.todo.delete({
+    where: {
+      id: param.id,
+    },
   })
   return todos
 }

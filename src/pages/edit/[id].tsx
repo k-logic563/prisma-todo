@@ -24,7 +24,7 @@ export default function Edit() {
     try {
       const payloads = {
         ...values,
-        id: Number(query.id)
+        id: Number(query.id),
       }
       await updateTodo(payloads)
       await push('/')
@@ -59,7 +59,7 @@ export default function Edit() {
     <>
       <Head>
         <title>Edit | Todo App</title>
-        <meta name="description" content="Todo register page." />
+        <meta name="description" content="Todo edit page." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

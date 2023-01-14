@@ -1,9 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { updateTodo, getUniqueTodoWithUser } from 'prisma/functions/todos'
+import {
+  updateTodos,
+  getUniqueTodoWithUser,
+  deleteTodos,
+} from 'prisma/functions/todos'
 import { Todo, TodoWithUser } from '@/types'
 
-const allowMethods = ['PATCH', 'DELETE']
+const allowMethods = ['GET', 'PATCH', 'DELETE']
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,8 +28,15 @@ export default async function handler(
     case 'PATCH':
       if (!body) return res.status(400).end('No body')
       const params = JSON.parse(body) as Omit<Todo, 'userId'>
-      const updatedBook = await updateTodo(params)
-      res.status(200).json(updatedBook)
+      const updateTodo = await updateTodos(params)
+      res.status(200).json(updateTodo)
+      break
+
+    case 'DELETE':
+      const deleteTodo = await deleteTodos({
+        id: Number(id),
+      })
+      res.status(200).json(deleteTodo)
       break
 
     default:

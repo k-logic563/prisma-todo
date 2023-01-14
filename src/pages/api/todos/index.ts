@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { createTodo, getTodosWithUser } from 'prisma/functions/todos'
+import { createTodos, getTodosWithUser } from 'prisma/functions/todos'
 import { TodoWithUser, Todo } from '@/types'
 
 const allowMethods = ['GET', 'POST']
@@ -21,7 +21,7 @@ export default async function handler(
       if (!body) return res.status(400).end('No body')
       const params = JSON.parse(body) as Omit<Todo, 'id'>
       params.userId = Number(params.userId)
-      const todo = await createTodo(params)
+      const todo = await createTodos(params)
       res.status(200).json(todo)
       break
 

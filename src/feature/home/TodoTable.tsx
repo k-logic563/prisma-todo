@@ -1,15 +1,19 @@
 import Link from 'next/link'
-import { Table, ActionIcon, Flex } from '@mantine/core'
+import { Table, ActionIcon, Flex, Text } from '@mantine/core'
 import { IconPencil, IconTrashX } from '@tabler/icons'
 
 import { useTodos } from '@/hooks/useTodos'
 
-export const TodoTable = () => {
+type Props = {
+  openModal: (title: string, id: number) => void
+}
+
+export const TodoTable = ({ openModal }: Props) => {
   const { todos, error } = useTodos()
 
   if (error) throw new Error()
 
-  return (
+  return todos?.length !== 0 ? (
     <Table>
       <thead>
         <tr>
@@ -32,7 +36,11 @@ export const TodoTable = () => {
                     <IconPencil size={16} />
                   </ActionIcon>
                 </Link>
-                <ActionIcon variant="filled" color="red">
+                <ActionIcon
+                  variant="filled"
+                  color="red"
+                  onClick={() => openModal(todo.title, todo.id)}
+                >
                   <IconTrashX size={16} />
                 </ActionIcon>
               </Flex>
@@ -41,5 +49,7 @@ export const TodoTable = () => {
         ))}
       </tbody>
     </Table>
+  ) : (
+    <Text align="center">TODOがありません。</Text>
   )
 }
