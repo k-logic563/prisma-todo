@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { TextInput, Group, Button, Container } from '@mantine/core'
@@ -5,13 +6,14 @@ import { useForm } from '@mantine/form'
 
 import { createTodo } from '@/libs/api/todos'
 
-import { FormValues } from '@/types'
+import { FormValues, Todo } from '@/types'
 
-export default function Register() {
-  const { push } = useRouter()
+export default function Edit() {
+  const { push, query } = useRouter()
   const form = useForm({
     initialValues: {
       title: '',
+      isCompleted: false,
     },
     validate: {
       title: (val) => (val.trim() ? null : 'Required'),
@@ -19,23 +21,44 @@ export default function Register() {
   })
 
   const handleSubmit = async (values: FormValues) => {
+    console.log('🍤', values)
+    // try {
+    //   const payloads = {
+    //     ...values,
+    //     userId: 1,
+    //   }
+    //   await createTodo(payloads)
+    //   await push('/')
+    // } catch (e) {
+    //   alert(e)
+    // }
+  }
+
+  const fetchData = async () => {
+    if (!query.id) return
+
     try {
-      const payloads = {
-        ...values,
-        isCompleted: false,
-        userId: 1,
+      const response = await fetch(`/api/todos/${query.id}`)
+
+      if (response.status !== 200) {
+        throw new Error(response.statusText)
       }
-      await createTodo(payloads)
-      await push('/')
-    } catch (e) {
-      alert(e)
+
+      const data = (await response.json()) as Todo
+      form.setFieldValue('title', data.title)
+    } catch (error) {
+      throw error
     }
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [query])
 
   return (
     <>
       <Head>
-        <title>Register | Todo App</title>
+        <title>Edit | Todo App</title>
         <meta name="description" content="Todo register page." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -45,11 +68,11 @@ export default function Register() {
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
               withAsterisk
-              label="TODO Title"
+              label="Todo"
               {...form.getInputProps('title')}
             />
             <Group position="right" mt="md">
-              <Button type="submit">登録</Button>
+              <Button type="submit">Submit</Button>
             </Group>
           </form>
         </Container>

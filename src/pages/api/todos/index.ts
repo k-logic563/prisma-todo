@@ -3,6 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { createTodo, getTodosWithUser } from 'prisma/functions/todos'
 import { TodoWithUser, Todo } from '@/types'
 
+const allowMethods = ['GET', 'POST']
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<TodoWithUser[] | Todo>
@@ -24,7 +26,7 @@ export default async function handler(
       break
 
     default:
-      res.setHeader('Allow', ['GET', 'POST'])
+      res.setHeader('Allow', allowMethods)
       res.status(405).end(`Method ${method} Not Allowed`)
   }
 }

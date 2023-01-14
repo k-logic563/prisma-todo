@@ -13,9 +13,9 @@ export const TodoTable = () => {
     <Table>
       <thead>
         <tr>
-          <th>title</th>
-          <th>creator</th>
-          <th>status</th>
+          <th>タイトル</th>
+          <th>作成者</th>
+          <th>ステータス</th>
           <th style={{ width: '6em' }}>&ensp;</th>
         </tr>
       </thead>
